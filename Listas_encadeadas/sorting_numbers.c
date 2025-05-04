@@ -16,7 +16,7 @@ Para finalizar, o programa deve mostrar todos os números da terceira lista na o
 
 typedef struct Node_st
 {
-    int16_t data; // Alterado de uint16_t para int16_t para suportar números negativos
+    int16_t data; 
     struct Node_st *next;
     struct Node_st *previous;
 } Node_st;
