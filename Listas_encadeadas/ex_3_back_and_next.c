@@ -72,6 +72,7 @@ void insert_node_circular_list(Node **head)
     Node *new_node = create_node();
     printf("Digite o nome desejado: ");
     scanf("%39s", new_node->name);
+    getchar();
 
     if (*head == NULL)
     {
@@ -104,8 +105,9 @@ void insert_elements(Node **head)
     {
         if (*head == NULL)
         {
-            printf("Sua lista está vazia. Gostaria de adicionar um elemento? (Y/N): ");
+            printf("Sua lista esta vazia. Gostaria de adicionar um elemento? (Y/N): ");
             scanf(" %c", &y_n);
+            getchar();
 
             if (y_n == 'Y' || y_n == 'y')
             {
@@ -123,6 +125,7 @@ void insert_elements(Node **head)
 
             printf("\nGostaria de adicionar mais elementos? (Y/N): ");
             scanf(" %c", &y_n);
+            getchar();
 
             if (y_n == 'Y' || y_n == 'y')
             {
@@ -136,7 +139,75 @@ void insert_elements(Node **head)
     } while (check == 1);
 }
 
+/**
+ * @brief Função que permite navegar pela lista:
+ * '<' para trás
+ * '>' para frente
+ * 'q' para sair da função
+ * @param element Nodo que pode estar em qualquer posição da lista
+ */
+void back_and_next(Node *element)
+{
+    if(element == NULL)
+    {
+        printf("A lista se encontra vazia!");
+        return;
+    }
 
+    if(element->next == element)
+    {
+        printf("Sua lista te unico elemento: %s", element->name);
+        return;
+    }
+
+    printf("O nome do atual elemento: %s\n", element->name);
+    uint8_t check = 1;
+    do 
+    {
+        char command;
+        printf("Pressione:\nVoltar:  '<'\nAvancar: '>'\nSair:    'q'\n");
+        scanf(" %c", &command);
+        getchar();
+
+        if(command == '<') 
+        {
+            element = element->prev;
+            printf("%s\n", element->name);
+        } else if(command == '>') 
+        {
+            element = element->next;
+            printf("%s\n", element->name);
+        } else if(command == 'q' || command == 'Q')
+        {
+            printf("Voce esta nos deixando.");
+            exit(1);
+        } else 
+        {
+            printf("Comando inválido, tente novamente!");
+        }
+
+    } while(check == 1);
+}
+
+/**
+ * @brief Libera a memória alocada para a lista circular
+ * @param head Ponteiro para a cabeça da lista
+ */
+void free_list(Node *head)
+{
+    if (head == NULL)
+        return;
+
+    Node *current = head;
+    Node *next_node;
+
+    do
+    {
+        next_node = current->next;
+        free(current);
+        current = next_node;
+    } while (current != head);
+}
 
 int main(void)
 {
@@ -146,6 +217,12 @@ int main(void)
 
     printf("\nLista final:\n");
     print_list(list);
+
+    if (list != NULL)
+    {
+        printf("\nIniciando navegacao pela lista...\n");
+        back_and_next(list);
+    }
 
     return 0;
 }
