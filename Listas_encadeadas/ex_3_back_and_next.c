@@ -12,6 +12,7 @@ Escreva uma função que permita inserir elementos na lista e uma função que r
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <conio.h>
 
 typedef struct Node 
 {
@@ -139,6 +140,7 @@ void insert_elements(Node **head)
     } while (check == 1);
 }
 
+//==========USANDO CHAR PARA NAVEGAR==========//
 /**
  * @brief Função que permite navegar pela lista:
  * '<' para trás
@@ -146,7 +148,7 @@ void insert_elements(Node **head)
  * 'q' para sair da função
  * @param element Nodo que pode estar em qualquer posição da lista
  */
-void back_and_next(Node *element)
+void back_and_next_char(Node *element)
 {
     if(element == NULL)
     {
@@ -160,7 +162,7 @@ void back_and_next(Node *element)
         return;
     }
 
-    printf("O nome do atual elemento: %s\n", element->name);
+    printf("Elemento atual: %s\n", element->name);
     uint8_t check = 1;
     do 
     {
@@ -186,8 +188,53 @@ void back_and_next(Node *element)
             printf("Comando inválido, tente novamente!");
         }
 
-    } while(check == 1);
+    } while(check);
 }
+//======================================================
+//==========USANDO _getch() PARA NAVEGAR==========//
+/**
+ * @brief Função que permite navegar pela lista:
+ * ← para trás
+ * → para frente
+ * q para sair da função
+ * @param element Nodo que pode estar em qualquer posição da lista
+ */
+void back_and_next(Node *element) {
+    if (element == NULL) {
+        printf("A lista se encontra vazia!\n");
+        return;
+    }
+
+    if (element->next == element) {
+        printf("Sua lista tem um único elemento: %s\n", element->name);
+        return;
+    }
+
+    printf("Elemento atual: %s\n", element->name);
+    printf("Pressione:\nVoltar:  '<'\nAvancar: '>'\nSair:    'q'\n");
+    uint8_t check = 1;
+
+    do{
+        uint16_t ch = _getch();
+
+        if (ch == 0 || ch == 224) {
+            uint16_t arrow = _getch(); // Captura o segundo código
+
+            if (arrow == 75) { // ← esquerda
+                element = element->prev;
+                printf("<< %s\n", element->name);
+            } else if (arrow == 77) { // → direita
+                element = element->next;
+                printf(">> %s\n", element->name);
+            }
+
+        } else if (ch == 'q' || ch == 'Q') {
+            printf("Voce esta saindo...\n");
+            break;
+        }
+    } while(check); 
+}
+//========================================================
 
 /**
  * @brief Libera a memória alocada para a lista circular
