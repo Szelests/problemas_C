@@ -64,5 +64,13 @@
   },
   "files.associations": {
     "math.h": "c"
-  }
+  },
+    "terminal.integrated.profiles.windows": {
+        "PowerShell": {
+            "path": "pwsh.exe",
+            "args": ["-NoExit", "-Command", ". $PROFILE"]
+        }
+    },
+    "terminal.integrated.defaultProfile.windows": "PowerShell"
 }
+
